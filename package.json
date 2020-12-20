@@ -1,0 +1,11 @@
+{
+  "name": "react-sockets-chat-app",
+  "version": "0.1.0",
+  "description": "A chat web application built on Express, MongoDB, Socket.io and React.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Luis Gil Gutiérrez de la Barreda",
+  "license": "MIT"
+}
