@@ -3,6 +3,7 @@ const http = require("http");
 const express = require("express");
 const socketio = require("socket.io");
 const cors = require("cors");
+const { connectDB } = require("../database/config");
 
 const Socket = require("./Socket");
 
@@ -12,6 +13,8 @@ class Server {
   constructor() {
     this.app = express();
     this.port = process.env.PORT || 8080;
+
+    connectDB();
 
     this.server = http.createServer(this.app);
 
