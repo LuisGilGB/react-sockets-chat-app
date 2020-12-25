@@ -1,5 +1,6 @@
 const path = require("path");
 const http = require("http");
+const chalk = require("chalk");
 const express = require("express");
 const socketio = require("socket.io");
 const cors = require("cors");
@@ -32,7 +33,7 @@ class Server {
     this.initMiddlewares();
 
     this.server.listen(this.port, () => {
-      console.log(`Server running on port ${this.port}`);
+      console.log(`Server running on port ${chalk.cyan(this.port)}`);
     });
   }
 }
