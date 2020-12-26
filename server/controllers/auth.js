@@ -54,7 +54,10 @@ const login = async (req, res = response) => {
       });
     }
 
-    const isValidPassword = bcrypt.compareSync(password, user.password);
+    const isValidPassword = bcrypt.compareSync(
+      password.toString(),
+      user.password
+    );
     if (!isValidPassword) {
       return res.status(400).json({
         success: false,
@@ -79,10 +82,24 @@ const login = async (req, res = response) => {
 };
 
 const renewToken = async (req, res = response) => {
-  res.json({
-    success: true,
-    msg: "Validated new token",
-  });
+  try {
+    const { uid } = req;
+
+    const token = await generateJWT(uid);
+    const user = await User.findById(uid);
+
+    res.json({
+      success: true,
+      user,
+      token,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      msg: "Please, contact with the administrator",
+    });
+  }
 };
 
 module.exports = {
