@@ -3,23 +3,26 @@ const { response } = require("express");
 const registerNewUser = async (req, res = response) => {
   res.json({
     success: true,
-    message: "New user registration done",
+    msg: "New user registration done",
     user: {},
   });
 };
 
 const login = async (req, res = response) => {
+  const { email, password } = req.body;
   res.json({
     success: true,
-    message: "User logged in",
-    user: {},
+    msg: "User logged in",
+    user: {
+      email,
+    },
   });
 };
 
 const renewToken = async (req, res = response) => {
   res.json({
     success: true,
-    message: "Validated new token",
+    msg: "Validated new token",
   });
 };
 
