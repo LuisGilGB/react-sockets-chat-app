@@ -27,6 +27,7 @@ class Server {
   initMiddlewares() {
     this.app.use(express.static(PUBLIC_DIR));
     this.app.use(cors());
+    this.app.use("/api/login", require("../router/auth"));
   }
 
   run() {
