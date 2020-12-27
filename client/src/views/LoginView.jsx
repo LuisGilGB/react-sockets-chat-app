@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import { AutoCompleteContext } from "../context/AutoCompleteContext";
 
 const initialState = {
   email: "",
@@ -11,6 +12,7 @@ const initialState = {
 const LoginView = () => {
   const [form, setForm] = useState(initialState);
   const { logIn } = useContext(AuthContext);
+  const { autoComplete } = useContext(AutoCompleteContext);
 
   useEffect(() => {
     const storedRememberMe = !!localStorage.getItem("rememberMe");
@@ -67,6 +69,7 @@ const LoginView = () => {
             name="email"
             placeholder="Email"
             value={form.email}
+            autoComplete={autoComplete}
             onChange={onChange}
           />
           <span className="focus-input100"></span>
@@ -78,6 +81,7 @@ const LoginView = () => {
             type="password"
             name="password"
             placeholder="Password"
+            autoComplete={autoComplete}
             value={form.password}
             onChange={onChange}
           />
