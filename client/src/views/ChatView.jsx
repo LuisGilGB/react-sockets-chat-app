@@ -1,4 +1,5 @@
 import ChatMain from "../components/ChatMain";
+import ChatMainEmpty from "../components/ChatMainEmpty";
 import PeopleInbox from "../components/PeopleInbox";
 import "../css/chat.css";
 
@@ -8,7 +9,7 @@ const ChatView = () => {
       <div className="messaging">
         <div className="inbox_msg">
           <PeopleInbox />
-          <ChatMain />
+          {true ? <ChatMain /> : <ChatMainEmpty />}
         </div>
       </div>
     </>
