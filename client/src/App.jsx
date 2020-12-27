@@ -1,4 +1,3 @@
-import {} from "";
 import { SocketProvider } from "./context/SocketContext";
 import AppRouter from "./routes/AppRouter";
 

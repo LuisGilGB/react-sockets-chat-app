@@ -1,4 +1,9 @@
-import { Redirect, Route, Router, Switch } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Redirect,
+  Route,
+  Switch,
+} from "react-router-dom";
 import ChatView from "../views/ChatView";
 import AuthRouter from "./AuthRouter";
 
