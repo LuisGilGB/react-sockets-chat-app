@@ -105,7 +105,12 @@ const LoginView = () => {
         </div>
 
         <div className="container-login100-form-btn m-t-17">
-          <button className="login100-form-btn">Log in</button>
+          <button
+            className="login100-form-btn"
+            disabled={!(form.email?.length && form.password?.length)}
+          >
+            Log in
+          </button>
         </div>
       </form>
     </>

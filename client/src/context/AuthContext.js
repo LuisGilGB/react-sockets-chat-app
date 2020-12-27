@@ -44,10 +44,8 @@ export const AuthProvider = ({ children }) => {
       { email, password },
       "POST"
     );
-    console.log(resData);
     if (resData.success) {
       const { token, user } = resData;
-      console.log(user);
       localStorage.setItem("token", token);
       dispatch({
         type: ACTIONS.USER_LOG_IN,
