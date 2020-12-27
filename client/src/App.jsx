@@ -1,10 +1,13 @@
+import { AuthProvider } from "./context/AuthContext";
 import { SocketProvider } from "./context/SocketContext";
 import AppRouter from "./routes/AppRouter";
 
 const App = () => {
   return (
     <SocketProvider>
-      <AppRouter />
+      <AuthProvider>
+        <AppRouter />
+      </AuthProvider>
     </SocketProvider>
   );
 };

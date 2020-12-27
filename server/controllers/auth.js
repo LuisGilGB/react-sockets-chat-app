@@ -50,7 +50,7 @@ const login = async (req, res = response) => {
     if (!user) {
       return res.status(404).json({
         success: false,
-        msg: "The login data is not correct",
+        msg: "Login data is not correct",
       });
     }
 
@@ -61,7 +61,7 @@ const login = async (req, res = response) => {
     if (!isValidPassword) {
       return res.status(400).json({
         success: false,
-        msg: "Th login data is not correct",
+        msg: "Login data is not correct",
       });
     }
 
