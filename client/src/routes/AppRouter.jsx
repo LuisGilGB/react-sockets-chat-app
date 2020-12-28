@@ -1,16 +1,13 @@
 import { useContext, useEffect } from "react";
-import {
-  BrowserRouter as Router,
-  Redirect,
-  Route,
-  Switch,
-} from "react-router-dom";
+import { BrowserRouter as Router, Redirect, Switch } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import ChatView from "../views/ChatView";
 import AuthRouter from "./AuthRouter";
+import ConditionalRoute from "./ConditionalRoute";
+import PrivateRoute from "./PrivateRoute";
 
 const AppRouter = () => {
-  const { verificationPending, verifyToken } = useContext(AuthContext);
+  const { logged, verificationPending, verifyToken } = useContext(AuthContext);
 
   useEffect(() => {
     verifyToken();
@@ -24,8 +21,17 @@ const AppRouter = () => {
     <Router>
       <div>
         <Switch>
-          <Route path="/auth" component={AuthRouter} />
-          <Route exact path="/" component={ChatView} />
+          <ConditionalRoute
+            condition={!logged}
+            path="/auth"
+            component={AuthRouter}
+          />
+          <PrivateRoute
+            isAuthenticated={logged}
+            exact
+            path="/"
+            component={ChatView}
+          />
           <Redirect to="/" />
         </Switch>
       </div>
