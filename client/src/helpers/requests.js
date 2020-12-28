@@ -21,3 +21,25 @@ export const tokenlessRequest = async (
     return err?.response;
   }
 };
+
+export const tokenizedRequest = async (
+  endpoint = "/",
+  data,
+  method = "GET"
+) => {
+  const url = `${BASE_URL}${endpoint}`;
+
+  try {
+    const token = localStorage.getItem("token") || "";
+    const res = await axios({
+      method,
+      url,
+      data,
+      headers: { "x-token": token },
+    });
+    return res;
+  } catch (err) {
+    console.error(err);
+    return err?.response;
+  }
+};

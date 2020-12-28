@@ -1,6 +1,6 @@
 import { createContext, useCallback, useReducer } from "react";
 import Swal from "sweetalert2";
-import { tokenlessRequest } from "../helpers/requests";
+import { tokenizedRequest, tokenlessRequest } from "../helpers/requests";
 
 export const AuthContext = createContext();
 
@@ -12,12 +12,17 @@ const ACTIONS = {
   LOG_IN_DONE: "LOG_IN_DONE",
   LOG_IN_FAILED: "LOG_IN_FAILED",
   USER_LOG_OUT: "USER_LOG_OUT",
+  VERIFICATION_REQUEST: "VERIFICATION_REQUEST",
+  VERIFICATION_DONE: "VERIFICATION_DONE",
+  VERIFICATION_FAILED: "VERIFICATION_FAILED",
 };
 
 const initialState = {
   logged: false,
+  verified: false,
   pending: false,
   registrationPending: false,
+  verificationPending: true,
   uid: null,
   name: null,
   email: null,
@@ -52,10 +57,29 @@ const reducer = (state, { type, payload }) => {
     [ACTIONS.LOG_IN_FAILED]: () => ({
       ...initialState,
       registrationPending: state.registrationPending,
+      verificationPending: false,
     }),
     [ACTIONS.USER_LOG_OUT]: () => ({
       ...initialState,
       registrationPending: state.registrationPending,
+      verificationPending: false,
+    }),
+    [ACTIONS.VERIFICATION_REQUEST]: () => ({
+      verificationPending: true,
+    }),
+    [ACTIONS.VERIFICATION_DONE]: () => ({
+      logged: true,
+      verified: true,
+      pending: false,
+      verificationPending: false,
+      uid: payload.user?.uid,
+      name: payload.user?.name,
+      email: payload.user?.email,
+    }),
+    [ACTIONS.VERIFICATION_FAILED]: () => ({
+      ...initialState,
+      verificationPending: false,
+      verified: false,
     }),
   };
 
@@ -134,7 +158,26 @@ export const AuthProvider = ({ children }) => {
     });
   };
 
-  const verifyToken = useCallback(() => {}, []);
+  const verifyToken = useCallback(async () => {
+    dispatch({
+      type: ACTIONS.VERIFICATION_REQUEST,
+      payload: {},
+    });
+    const token = localStorage.getItem("token");
+    if (token) {
+      const { data: resData } = await tokenizedRequest("/api/login/renew");
+      if (resData?.success) {
+        return dispatch({
+          type: ACTIONS.VERIFICATION_DONE,
+          payload: { user: resData.user },
+        });
+      }
+    }
+    dispatch({
+      type: ACTIONS.VERIFICATION_FAILED,
+      payload: {},
+    });
+  }, []);
 
   return (
     <AuthContext.Provider
