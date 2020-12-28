@@ -152,6 +152,7 @@ export const AuthProvider = ({ children }) => {
 
   const logOut = () => {
     // goToLogin();
+    localStorage.removeItem("token");
     dispatch({
       type: ACTIONS.USER_LOG_OUT,
       payload: {},
