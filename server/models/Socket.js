@@ -1,4 +1,8 @@
-const { setUserOnline, setUserOffline } = require("../controllers/sockets");
+const {
+  setUserOnline,
+  setUserOffline,
+  getUsers,
+} = require("../controllers/sockets");
 const { checkJWT } = require("../helpers/jwt");
 
 class Socket {
@@ -23,6 +27,12 @@ class Socket {
       socket.emit("connection-message", {
         msg: "Welcome to server!",
         date: new Date(),
+      });
+
+      this.io.emit("users-update", {
+        payload: {
+          users: await getUsers(),
+        },
       });
 
       socket.on("disconnect", async () => {

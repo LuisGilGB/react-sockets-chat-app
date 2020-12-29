@@ -1,6 +1,7 @@
-import { createContext, useCallback, useReducer } from "react";
+import { createContext, useCallback, useContext, useReducer } from "react";
 import Swal from "sweetalert2";
 import { tokenizedRequest, tokenlessRequest } from "../helpers/requests";
+import { ChatContext } from "./chat/ChatContext";
 
 export const AuthContext = createContext();
 
@@ -92,6 +93,7 @@ const reducer = (state, { type, payload }) => {
 };
 
 export const AuthProvider = ({ children }) => {
+  const { logInDone } = useContext(ChatContext);
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const register = async ({ name, email, password }) => {
@@ -111,6 +113,7 @@ export const AuthProvider = ({ children }) => {
         type: ACTIONS.REGISTER_DONE,
         payload: { user },
       });
+      logInDone(user.uid);
     } else {
       dispatch({
         type: ACTIONS.REGISTER_FAILED,
@@ -141,6 +144,7 @@ export const AuthProvider = ({ children }) => {
         type: ACTIONS.LOG_IN_DONE,
         payload: { user },
       });
+      logInDone(user.uid);
     } else {
       dispatch({
         type: ACTIONS.LOG_IN_FAILED,
@@ -157,6 +161,7 @@ export const AuthProvider = ({ children }) => {
       type: ACTIONS.USER_LOG_OUT,
       payload: {},
     });
+    logInDone(null);
   };
 
   const verifyToken = useCallback(async () => {
@@ -168,6 +173,7 @@ export const AuthProvider = ({ children }) => {
     if (token) {
       const { data: resData } = await tokenizedRequest("/api/login/renew");
       if (resData?.success) {
+        logInDone(resData.user?.uid);
         return dispatch({
           type: ACTIONS.VERIFICATION_DONE,
           payload: { user: resData.user },
@@ -178,7 +184,8 @@ export const AuthProvider = ({ children }) => {
       type: ACTIONS.VERIFICATION_FAILED,
       payload: {},
     });
-  }, []);
+    logInDone(null);
+  }, [logInDone]);
 
   return (
     <AuthContext.Provider

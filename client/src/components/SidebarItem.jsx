@@ -1,6 +1,6 @@
 import classnames from "classnames";
 
-const SidebarItem = ({ active }) => {
+const SidebarItem = ({ userName, active, online }) => {
   return (
     <>
       {/* <!-- conversación activa inicio --> */}
@@ -14,14 +14,17 @@ const SidebarItem = ({ active }) => {
           </div>
           <div className="chat_ib">
             <h5>
-              Tester Testa <span className="chat_date">Dec 25</span>
+              {userName} <span className="chat_date">Dec 25</span>
             </h5>
             <p>
               Test, which is a new approach to have all solutions astrology
               under one roof.
             </p>
-            <span className="text-success">Online</span>
-            <span className="text-danger">Offline</span>
+            {online ? (
+              <span className="text-success">Online</span>
+            ) : (
+              <span className="text-danger">Offline</span>
+            )}
           </div>
         </div>
       </div>
