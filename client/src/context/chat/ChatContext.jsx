@@ -19,8 +19,15 @@ export const ChatProvider = ({ children }) => {
     [dispatch]
   );
 
+  const selectChat = useCallback(
+    (uid) => {
+      uid !== state.activeChat && dispatch(actionCreators.selectChat(uid));
+    },
+    [state.activeChat, dispatch]
+  );
+
   return (
-    <ChatContext.Provider value={{ ...state, logInDone, setUsers }}>
+    <ChatContext.Provider value={{ ...state, logInDone, setUsers, selectChat }}>
       {children}
     </ChatContext.Provider>
   );

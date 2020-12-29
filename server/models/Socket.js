@@ -18,7 +18,7 @@ class Socket {
 
       if (!isValidToken) {
         console.log("Unidentified socket. Disconnecting...");
-        socket.disconnect();
+        return socket.disconnect();
       }
       console.log(`Socket client connected (uid: ${uid})`);
 
@@ -38,6 +38,11 @@ class Socket {
       socket.on("disconnect", async () => {
         await setUserOffline(uid);
         console.log(`Socket client disconnected (uid: ${uid})`);
+        this.io.emit("users-update", {
+          payload: {
+            users: await getUsers(),
+          },
+        });
       });
     });
   }

@@ -15,6 +15,9 @@ export const chatReducer = (state, { type, payload }) => {
     [ACTIONS.SET_USERS]: () => ({
       users: payload.users.filter((u) => u.uid !== state.uid),
     }),
+    [ACTIONS.SELECT_CHAT]: () => ({
+      activeChat: payload.uid,
+    }),
   };
 
   return reducers[type] ? { ...state, ...reducers[type]() } : state;

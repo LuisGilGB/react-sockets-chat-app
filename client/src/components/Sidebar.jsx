@@ -3,7 +3,7 @@ import { ChatContext } from "../context/chat/ChatContext";
 import SidebarItem from "./SidebarItem";
 
 const Sidebar = () => {
-  const { users = [] } = useContext(ChatContext);
+  const { users = [], activeChat, selectChat } = useContext(ChatContext);
 
   return (
     <>
@@ -12,9 +12,12 @@ const Sidebar = () => {
         {users.map((user, i) => (
           <SidebarItem
             key={user.uid}
-            active={!i}
+            active={user.uid === activeChat}
             userName={user.name}
             online={user.online}
+            onClick={() => {
+              selectChat(user.uid);
+            }}
           />
         ))}
         {/* <!-- Espacio extra para scroll --> */}

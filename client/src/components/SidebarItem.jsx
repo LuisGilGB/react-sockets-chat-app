@@ -1,10 +1,13 @@
 import classnames from "classnames";
 
-const SidebarItem = ({ userName, active, online }) => {
+const SidebarItem = ({ userName, active, online, onClick }) => {
   return (
     <>
       {/* <!-- conversación activa inicio --> */}
-      <div className={classnames({ chat_list: true, active_chat: active })}>
+      <div
+        className={classnames({ chat_list: true, active_chat: active })}
+        onClick={onClick}
+      >
         <div className="chat_people">
           <div className="chat_img">
             <img
