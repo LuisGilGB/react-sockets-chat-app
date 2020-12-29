@@ -9,7 +9,7 @@ const SOCKET_SERVER_HOST =
 export const SocketContext = createContext();
 
 export const SocketProvider = ({ children }) => {
-  const { setUsers } = useContext(ChatContext);
+  const { setUsers, receiveMessage } = useContext(ChatContext);
   const { logged } = useContext(AuthContext);
   const { socket, online, connectSocket, disconnectSocket } = useSocket(
     SOCKET_SERVER_HOST
@@ -27,9 +27,17 @@ export const SocketProvider = ({ children }) => {
     }
   }, [logged, disconnectSocket]);
 
-  socket?.on("users-update", ({ payload }) => {
-    setUsers(payload.users);
-  });
+  useEffect(() => {
+    socket?.on("users-update", ({ payload }) => {
+      setUsers(payload.users);
+    });
+  }, [socket, setUsers]);
+
+  useEffect(() => {
+    socket?.on("message-received", ({ payload }) => {
+      receiveMessage(payload.message);
+    });
+  }, [socket, receiveMessage]);
 
   return (
     <SocketContext.Provider value={{ socket, online }}>

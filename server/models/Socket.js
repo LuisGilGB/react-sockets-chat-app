@@ -2,6 +2,7 @@ const {
   setUserOnline,
   setUserOffline,
   getUsers,
+  onChatMessageSent,
 } = require("../controllers/sockets");
 const { checkJWT } = require("../helpers/jwt");
 
@@ -24,6 +25,8 @@ class Socket {
 
       await setUserOnline(uid);
 
+      socket.join(uid);
+
       socket.emit("connection-message", {
         msg: "Welcome to server!",
         date: new Date(),
@@ -33,6 +36,16 @@ class Socket {
         payload: {
           users: await getUsers(),
         },
+      });
+
+      socket.on("send-chat-message", async ({ payload }) => {
+        const message = await onChatMessageSent(payload);
+        this.io
+          .to(message.to)
+          .emit("message-received", { payload: { message } });
+        this.io
+          .to(message.from)
+          .emit("message-received", { payload: { message } });
       });
 
       socket.on("disconnect", async () => {

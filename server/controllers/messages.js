@@ -28,6 +28,18 @@ const getMessagesFromUser = async (req, res = response) => {
   }
 };
 
+const saveMessage = async (message) => {
+  try {
+    const newMessage = await new Message(message);
+    await newMessage.save();
+    return newMessage;
+  } catch (err) {
+    console.error(err);
+    return false;
+  }
+};
+
 module.exports = {
   getMessagesFromUser,
+  saveMessage,
 };
