@@ -1,5 +1,6 @@
-import { createContext } from "react";
+import { createContext, useContext, useEffect } from "react";
 import useSocket from "../hooks/useSocket";
+import { AuthContext } from "./AuthContext";
 
 const SOCKET_SERVER_HOST =
   process.env.SOCKET_SERVER_HOST || "http://localhost:8080";
@@ -7,7 +8,23 @@ const SOCKET_SERVER_HOST =
 export const SocketContext = createContext();
 
 export const SocketProvider = ({ children }) => {
-  const { socket, online } = useSocket(SOCKET_SERVER_HOST);
+  const { logged } = useContext(AuthContext);
+  const { socket, online, connectSocket, disconnectSocket } = useSocket(
+    SOCKET_SERVER_HOST
+  );
+
+  useEffect(() => {
+    if (logged) {
+      connectSocket();
+    }
+  }, [logged, connectSocket]);
+
+  useEffect(() => {
+    if (!logged) {
+      disconnectSocket();
+    }
+  }, [logged, disconnectSocket]);
+
   return (
     <SocketContext.Provider value={{ socket, online }}>
       {children}

@@ -5,13 +5,13 @@ import AppRouter from "./routes/AppRouter";
 
 const App = () => {
   return (
-    <SocketProvider>
-      <AuthProvider>
+    <AuthProvider>
+      <SocketProvider>
         <AutoCompleteProvider>
           <AppRouter />
         </AutoCompleteProvider>
-      </AuthProvider>
-    </SocketProvider>
+      </SocketProvider>
+    </AuthProvider>
   );
 };
 

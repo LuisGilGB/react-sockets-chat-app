@@ -13,6 +13,10 @@ class Socket {
         msg: "Welcome to server!",
         date: new Date(),
       });
+
+      socket.on("disconnect", () => {
+        console.log("Socket client disconnected");
+      });
     });
   }
 }
