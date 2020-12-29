@@ -1,3 +1,6 @@
+const { setUserOnline, setUserOffline } = require("../controllers/sockets");
+const { checkJWT } = require("../helpers/jwt");
+
 class Socket {
   constructor(io, props = {}) {
     this.io = io;
@@ -6,16 +9,25 @@ class Socket {
   }
 
   addSocketEvents() {
-    this.io.on("connection", (socket) => {
-      console.log("Socket client connected.");
+    this.io.on("connection", async (socket) => {
+      const [isValidToken, uid] = checkJWT(socket.handshake.query["x-token"]);
+
+      if (!isValidToken) {
+        console.log("Unidentified socket. Disconnecting...");
+        socket.disconnect();
+      }
+      console.log(`Socket client connected (uid: ${uid})`);
+
+      await setUserOnline(uid);
 
       socket.emit("connection-message", {
         msg: "Welcome to server!",
         date: new Date(),
       });
 
-      socket.on("disconnect", () => {
-        console.log("Socket client disconnected");
+      socket.on("disconnect", async () => {
+        await setUserOffline(uid);
+        console.log(`Socket client disconnected (uid: ${uid})`);
       });
     });
   }
