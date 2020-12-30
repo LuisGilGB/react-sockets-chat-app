@@ -12,7 +12,7 @@ const getMessagesFromUser = async (req, res = response) => {
         { from, to: userId },
       ],
     })
-      .sort({ createdAt: "desc" })
+      .sort({ createdAt: "asc" })
       .limit(30);
 
     res.json({
