@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect } from "react";
+import { scrollToBottomAnimated } from "../helpers/scroll";
 import useSocket from "../hooks/useSocket";
 import { AuthContext } from "./AuthContext";
 import { ChatContext } from "./chat/ChatContext";
@@ -36,6 +37,7 @@ export const SocketProvider = ({ children }) => {
   useEffect(() => {
     socket?.on("message-received", ({ payload }) => {
       receiveMessage(payload.message);
+      scrollToBottomAnimated("chat-history");
     });
   }, [socket, receiveMessage]);
 

@@ -6,6 +6,7 @@ export const ACTIONS = {
   LOAD_MESSAGES: "LOAD_MESSAGES",
   LOAD_MESSAGES_DONE: "LOAD_MESSAGES_DONE",
   LOAD_MESSAGES_FAILED: "LOAD_MESSAGES_FAILED",
+  CLOSE_SESSION: "CLOSE_SESSION",
 };
 
 export const actionCreators = {
@@ -35,6 +36,10 @@ export const actionCreators = {
   }),
   loadMessagesFailed: () => ({
     type: ACTIONS.LOAD_MESSAGES_FAILED,
+    payload: {},
+  }),
+  closeSession: () => ({
+    type: ACTIONS.CLOSE_SESSION,
     payload: {},
   }),
 };

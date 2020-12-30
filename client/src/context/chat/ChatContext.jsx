@@ -1,5 +1,6 @@
 import { createContext, useCallback, useReducer } from "react";
 import { tokenizedRequest } from "../../helpers/requests";
+import { scrollToBottom } from "../../helpers/scroll";
 import { actionCreators } from "./chatActions";
 import { chatReducer, initialState } from "./chatReducer";
 
@@ -29,6 +30,7 @@ export const ChatProvider = ({ children }) => {
       dispatch(actionCreators.loadMessages());
       const res = await tokenizedRequest(`/api/messages/${uid}`);
       dispatch(actionCreators.loadMessagesDone(res.data.messages));
+      scrollToBottom("chat-history");
     } catch {
       dispatch(actionCreators.loadMessagesFailed());
     }
@@ -44,6 +46,10 @@ export const ChatProvider = ({ children }) => {
     [state.activeChat, loadMessages]
   );
 
+  const closeSession = useCallback(() => {
+    dispatch(actionCreators.closeSession());
+  }, []);
+
   return (
     <ChatContext.Provider
       value={{
@@ -53,6 +59,7 @@ export const ChatProvider = ({ children }) => {
         selectChat,
         receiveMessage,
         loadMessages,
+        closeSession,
       }}
     >
       {children}

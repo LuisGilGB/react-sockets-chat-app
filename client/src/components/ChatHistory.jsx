@@ -10,7 +10,7 @@ const ChatHistory = () => {
 
   return (
     <>
-      <div className="msg_history">
+      <div className="msg_history" id="chat-history">
         {messages.map((message) => {
           const Component =
             message.from === uid ? OutgoingMessage : IncomingMessage;

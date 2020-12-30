@@ -37,6 +37,7 @@ export const chatReducer = (state, { type, payload }) => {
     [ACTIONS.LOAD_MESSAGES_FAILED]: () => ({
       fetchingMessages: false,
     }),
+    [ACTIONS.CLOSE_SESSION]: () => initialState,
   };
 
   return reducers[type] ? { ...state, ...reducers[type]() } : state;

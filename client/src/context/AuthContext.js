@@ -93,7 +93,7 @@ const reducer = (state, { type, payload }) => {
 };
 
 export const AuthProvider = ({ children }) => {
-  const { logInDone } = useContext(ChatContext);
+  const { logInDone, closeSession } = useContext(ChatContext);
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const register = async ({ name, email, password }) => {
@@ -157,11 +157,11 @@ export const AuthProvider = ({ children }) => {
   const logOut = () => {
     // goToLogin();
     localStorage.removeItem("token");
+    closeSession();
     dispatch({
       type: ACTIONS.USER_LOG_OUT,
       payload: {},
     });
-    logInDone(null);
   };
 
   const verifyToken = useCallback(async () => {
