@@ -41,10 +41,10 @@ class Socket {
       socket.on("send-chat-message", async ({ payload }) => {
         const message = await onChatMessageSent(payload);
         this.io
-          .to(message.to)
+          .to(payload.to)
           .emit("message-received", { payload: { message } });
         this.io
-          .to(message.from)
+          .to(payload.from)
           .emit("message-received", { payload: { message } });
       });
 

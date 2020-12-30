@@ -1,4 +1,4 @@
-const IncomingMessage = () => {
+const IncomingMessage = ({ content }) => {
   return (
     <>
       {/* <!-- Mensaje recibido Inicio --> */}
@@ -11,7 +11,7 @@ const IncomingMessage = () => {
         </div>
         <div className="received_msg">
           <div className="received_withd_msg">
-            <p>Test which is a new approach to have all solutions</p>
+            <p>{content}</p>
             <span className="time_date"> 11:01 AM | June 9</span>
           </div>
         </div>

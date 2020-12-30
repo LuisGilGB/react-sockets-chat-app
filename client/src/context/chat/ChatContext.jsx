@@ -1,4 +1,5 @@
 import { createContext, useCallback, useReducer } from "react";
+import { tokenizedRequest } from "../../helpers/requests";
 import { actionCreators } from "./chatActions";
 import { chatReducer, initialState } from "./chatReducer";
 
@@ -19,15 +20,41 @@ export const ChatProvider = ({ children }) => {
     [dispatch]
   );
 
+  const receiveMessage = useCallback((message) => {
+    dispatch(actionCreators.receiveMessage(message));
+  }, []);
+
+  const loadMessages = useCallback(async (uid) => {
+    try {
+      dispatch(actionCreators.loadMessages());
+      const res = await tokenizedRequest(`/api/messages/${uid}`);
+      dispatch(actionCreators.loadMessagesDone(res.data.messages));
+    } catch {
+      dispatch(actionCreators.loadMessagesFailed());
+    }
+  }, []);
+
   const selectChat = useCallback(
     (uid) => {
-      uid !== state.activeChat && dispatch(actionCreators.selectChat(uid));
+      if (uid !== state.activeChat) {
+        dispatch(actionCreators.selectChat(uid));
+        loadMessages(uid);
+      }
     },
-    [state.activeChat, dispatch]
+    [state.activeChat, loadMessages]
   );
 
   return (
-    <ChatContext.Provider value={{ ...state, logInDone, setUsers, selectChat }}>
+    <ChatContext.Provider
+      value={{
+        ...state,
+        logInDone,
+        setUsers,
+        selectChat,
+        receiveMessage,
+        loadMessages,
+      }}
+    >
       {children}
     </ChatContext.Provider>
   );
